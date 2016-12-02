@@ -10,12 +10,12 @@ app = Flask(__name__, static_url_path='')
 def app_start(host,port):
     app.run(host=host, port=port)
 
-def query(sql, params=None, commit=False):
+def query(sql, params=None, commitx=False):
     conn = sqlite3.connect('paste.db')
     cursor = conn.cursor()
     cursor.execute(sql, params)
     data = cursor.fetchall()
-    if commit is true
+    if commitx is True:
         conn.commit()
     cursor.close()
     return data
@@ -29,19 +29,13 @@ def make_password():
     return "".join(sample(s,passlen ))
 
 def insert_paste(idx,contentx,passwordx):
-    conn = sqlite3.connect('paste.db')
-    conn.execute("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",
-          (idx, contentx, passwordx))
-    conn.commit()
-    conn.close()
+    data = query("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",[idx, contentx, passwordx],True)
+    
 
 def get_paste(idx):
-    conn = sqlite3.connect('paste.db')
-    cursor = conn.cursor()
     sql = "Select content from pastes where id=?"
-    cursor.execute(sql, [idx])
-    data = cursor.fetchone()
-    conn.close()
+    data = query("Select content from pastes where id=?",[idx])
+
     if data and data[0]:
         return data[0]
     else:
