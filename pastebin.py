@@ -33,11 +33,9 @@ def insert_paste(idx,contentx,passwordx):
     
 
 def get_paste(idx):
-    sql = "Select content from pastes where id=?"
     data = query("Select content from pastes where id=?",[idx])
-
     if data and data[0]:
-        return data[0]
+        return data[0][0]
     else:
         return "Invaild ID!"
     
