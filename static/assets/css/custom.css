@@ -1,0 +1,20 @@
+.black
+{
+color: blue;
+}
+
+
+{
+text-align:center;
+}
+
+
+body {
+overflow-x:hidden;
+
+}
+.center1 {
+    margin: auto;
+    width: 75%;
+    padding: 10px;
+}
