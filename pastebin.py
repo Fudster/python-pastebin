@@ -9,7 +9,17 @@ app = Flask(__name__, static_url_path='')
 
 def app_start(host,port):
     app.run(host=host, port=port)
-    
+
+def query(sql, params=None, commit=False):
+    conn = sqlite3.connect('paste.db')
+    cursor = conn.cursor()
+    cursor.execute(sql, params)
+    data = cursor.fetchall()
+    if commit is true
+        conn.commit()
+    cursor.close()
+    return data
+
 def make_id():
 	return  "".join(sample((ascii_letters) * 10, 10))
 
