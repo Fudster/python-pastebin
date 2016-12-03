@@ -30,6 +30,11 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+def insert_db(query,args=()):
+    cur = get_db().execute(query, args)
+    get_db().commit()
+    cur.close()
+
 def make_id():
 	return  "".join(sample((ascii_letters) * 10, 10))
 
@@ -39,13 +44,13 @@ def make_password():
     return "".join(sample(s,passlen ))
 
 def insert_paste(idx,contentx,passwordx):
-    data = query("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",[idx, contentx, passwordx],True)
+    insert_db("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",[idx, contentx, passwordx])
     
 
 def get_paste(idx):
-    data = query("Select content from pastes where id=?",[idx])
+    data = query_db("Select content from pastes where id=?",[idx],True)
     if data and data[0]:
-        return data[0][0]
+        return data[0]
     else:
         return "Invaild ID!"
     
