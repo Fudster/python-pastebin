@@ -46,31 +46,24 @@ def make_password():
 def insert_paste(idx,contentx,passwordx):
     insert_db("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",[idx, contentx, passwordx])
     
-
 def get_paste(idx):
     data = query_db("Select content from pastes where id=?",[idx],True)
-    if data and data[0]:
-        return data[0]
+    if data:
+        return data[0][0]
     else:
         return "Invaild ID!"
     
 def delete_paste(idx,password):
-    conn = sqlite3.connect('paste.db')
-    cursor = conn.cursor()
-    sql = "Select password from pastes where id=?"
-    cursor.execute(sql, [idx])
-    data = cursor.fetchone()
+    data = query_db("Select password from pastes where id=?",[idx],True)
     if data and data[0] == password:
-        sql = " DELETE FROM pastes WHERE id = ?;"
-        cursor.execute(sql, [idx])
-        conn.commit()
-        conn.close()
+        insert_db("DELETE FROM pastes WHERE id = ?",[idx])
         return "Paste deleted!"
     else: 
         if not data:
             return "Invalid paste ID."
     if data[0] != password:
         return "Invalid password."
+
 @app.route("/")
 def show_form():
     return app.send_static_file('index.html') 
@@ -82,7 +75,6 @@ def create_paste():
     text = request.form.get("text")
     insert_paste(fname,text,password)
     logging.info(fname)
-#    return redirect("p/" + fname)
     return render_template('process.html', fname=fname, password=password)
 
 @app.route("/p/<slug>/")
@@ -99,13 +91,10 @@ def show_raw_paste(slug):
 def remove_paste(slug,slug2):
     result = delete_paste(slug,slug2)
     return result
+
 @app.route("/todo/")
 def to_do():
     return "handle error messages <br> add confirm delete function <br> hash passwords <br> Create user login system?"
 
 
-
-
-    
- 
 app_start('0.0.0.0',6060)
