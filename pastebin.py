@@ -49,7 +49,7 @@ def insert_paste(idx,contentx,passwordx):
 def get_paste(idx):
     data = query_db("Select content from pastes where id=?",[idx],True)
     if data:
-        return data[0][0]
+        return data[0]
     else:
         return "Invaild ID!"
     
