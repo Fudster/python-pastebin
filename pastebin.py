@@ -92,9 +92,7 @@ def remove_paste(slug,slug2):
     result = delete_paste(slug,slug2)
     return result
 
-@app.route("/todo/")
-def to_do():
-    return "handle error messages <br> add confirm delete function <br> hash passwords <br> Create user login system?"
+
 
 
 app_start('0.0.0.0',6060)
