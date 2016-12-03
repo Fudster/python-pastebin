@@ -51,7 +51,7 @@ def get_paste(idx):
     if data:
         return data[0]
     else:
-        return "Invaild ID!"
+        return "Invalid ID!"
     
 def delete_paste(idx,password):
     data = query_db("Select password from pastes where id=?",[idx],True)
