@@ -2,9 +2,12 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, send_from_directory, Response
 from random import sample
 from string import ascii_letters, digits
+import werkzeug.security
 import logging
 import sqlite3
 logging.basicConfig(filename='paste.log',level=logging.DEBUG)
+
+
 app = Flask(__name__, static_url_path='')
 
 def app_start(host,port):
@@ -44,7 +47,8 @@ def make_password():
     return "".join(sample(s,passlen ))
 
 def insert_paste(idx,contentx,passwordx):
-    insert_db("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",[idx, contentx, passwordx])
+    hashpw = werkzeug.security.generate_password_hash(passwordx)
+    insert_db("INSERT INTO pastes (id, content, password) VALUES(?, ?, ?)",[idx, contentx, hashpw])
     
 def get_paste(idx):
     data = query_db("Select content from pastes where id=?",[idx],True)
