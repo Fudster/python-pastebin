@@ -38,9 +38,20 @@ def insert_db(query,args=()):
     get_db().commit()
     cur.close()
 
-def make_id():
-	return  "".join(sample((ascii_letters) * 10, 10))
+def check_id(idx):
+    data = query_db("Select id from pastes where id=?",[idx],True)
+    if data:
+        return True
+    else:
+        return False
 
+
+def make_id():
+    id = "".join(sample((ascii_letters) * 10, 10))
+    while check_id(id) is True:
+        id = "".join(sample((ascii_letters) * 10, 10))
+    return id
+            
 def make_password():
     s = ascii_letters + digits + "!@*^$()[]+,.:~-_"
     passlen = 15
