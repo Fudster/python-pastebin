@@ -39,18 +39,13 @@ def insert_db(query,args=()):
     cur.close()
 
 def check_id(idx):
-    data = query_db("Select id from pastes where id=?",[idx],True)
-    if data:
-        return True
-    else:
-        return False
-
+    returb query_db("Select id from pastes where id=?",[idx],True)
 
 def make_id():
-    id = "".join(sample((ascii_letters) * 10, 10))
-    while check_id(id) is True:
+    while True:
         id = "".join(sample((ascii_letters) * 10, 10))
-    return id
+        if not check_id(id):
+            return id
             
 def make_password():
     s = ascii_letters + digits + "!@*^$()[]+,.:~-_"
