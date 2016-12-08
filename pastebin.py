@@ -39,7 +39,7 @@ def insert_db(query,args=()):
     cur.close()
 
 def check_id(idx):
-    returb query_db("Select id from pastes where id=?",[idx],True)
+    return query_db("Select id from pastes where id=?",[idx],True)
 
 def make_id():
     while True:
