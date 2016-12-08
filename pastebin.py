@@ -59,7 +59,7 @@ def get_paste(idx):
     
 def delete_paste(idx,password):
     data = query_db("Select password from pastes where id=?",[idx],True)
-    if data and data[0] == password:
+    if  werkzeug.security.check_password_hash(data[0],password) is True:
         insert_db("DELETE FROM pastes WHERE id = ?",[idx])
         return "Paste deleted!"
     else: 
